@@ -11,11 +11,10 @@ let emoticonSet = new Set()
 // 初始化emoticonSet,避免重复记录表情
 try {
   emoticons.forEach(emoticon => emoticonSet.add(emoticon.md5))
-  fs.closeSync(fs.openSync('./new-emoticons.dat', 'w'))
-  fs.readFileSync('./new-emoticons.dat').split('\n').forEach(emoticon => emoticonSet.add(emoticon.split(
-    ' ')[0]))
+  fs.readFileSync('./new-emoticons.dat', 'utf8').split('\n').forEach(emoticon => emoticonSet.add(
+    emoticon.split(' ')[0]))
 } catch (err) {
-
+  console.log(err)
 }
 
 bot.on('error', err => {
@@ -76,11 +75,18 @@ bot.on('message', msg => {
 bot.start()
 
 const sendEmoticon = (ToUserName, index) => {
-  index = index || 0 // 自定义表情顺序
+  index = index || 0 // 自定义
   if (users.has(ToUserName) && index < emoticons.length) {
     bot.sendEmoticon(emoticons[index].md5, ToUserName)
-    setTimeout(() => {
-        sendEmoticon(ToUserName, ++index)
-      }, 1000) // 自定义间隔
+      .catch(err => {
+        console.log(err)
+        return
+      }).then(() => {
+        setTimeout(() => {
+            sendEmoticon(ToUserName, ++index)
+          }, 1000) // 自定义间隔
+      })
+  } else {
+    console.log(`已轰炸 ${bot.contacts[ToUserName].getDisplayName()} ${index}个表情`)
   }
 }
