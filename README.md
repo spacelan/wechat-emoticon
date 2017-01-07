@@ -57,3 +57,9 @@ wechat4u可能是目前唯一能发送表情的JS库
 `cdnurl`用来直接下载表情，不需要认证
 
 更详细的请查看代码[index.js](https://github.com/spacelan/wechat-emoticon/blob/master/index.js#L58)
+
+## 各种表情下载脚本
+
+https://www.v2ex.com/t/313382
+https://github.com/spacelan/wechat-emoticon/issues
+
